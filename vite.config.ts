@@ -7,8 +7,13 @@ export default defineConfig({
   plugins: [
     react(),
     runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
-      ? [await import("@replit/vite-plugin-cartographer").then((m) => m.cartographer())]
+    ...(process.env.NODE_ENV !== "production" &&
+    process.env.REPL_ID !== undefined
+      ? [
+          await import("@replit/vite-plugin-cartographer").then((m) =>
+            m.cartographer(),
+          ),
+        ]
       : []),
   ],
   resolve: {
@@ -19,13 +24,21 @@ export default defineConfig({
     },
   },
   root: path.resolve(import.meta.dirname, "client"),
-  base: "/Dashboard/",           // <– viktig rad: talar om för Vite var sidan hostas
+  // Set the base URL to the repository name when deploying to GitHub Pages.
+  // This ensures that built asset paths include `/Dashboard` instead of assuming root.
+  base: "/Dashboard/",
   build: {
-    // bygg ut till dist/
+    // Output the built static site directly to the top-level `dist` folder. This
+    // makes it easier to deploy to GitHub Pages without needing to move files
+    // around, and ensures that `index.html` is located at the root of the
+    // build output.
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
   server: {
-    fs: { strict: true, deny: ["**/.*"] },
+    fs: {
+      strict: true,
+      deny: ["**/.*"],
+    },
   },
 });

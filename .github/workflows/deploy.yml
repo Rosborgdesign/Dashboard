@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Build both client and server. The client output is placed in dist/public due to the Vite config.
+      # Build the client and server. The client output is placed in `dist` according to the Vite config.
       - name: Build project
         run: npm run build
 

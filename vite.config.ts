@@ -24,10 +24,12 @@ export default defineConfig({
     },
   },
   root: path.resolve(import.meta.dirname, "client"),
-
-    base: "/Dashboard/",
-build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+  build: {
+    // Output the built static site directly to the top-level `dist` folder. This
+    // makes it easier to deploy to GitHub Pages without needing to move files
+    // around, and ensures that `index.html` is located at the root of the
+    // build output.
+    outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
   server: {

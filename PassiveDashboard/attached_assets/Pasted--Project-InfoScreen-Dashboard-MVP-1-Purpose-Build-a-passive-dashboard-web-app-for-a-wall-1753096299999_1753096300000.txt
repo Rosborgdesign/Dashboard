@@ -1,0 +1,52 @@
+# Project: InfoScreen Dashboard (MVP)
+
+## 1. Purpose
+Build a passive dashboard web-app for a wall/secondary screen.  
+Four modules must be visible simultaneously:
+
+1. **Moodboard** – rotating full-width images (70 % height, upper area).  
+2. **Clock** – top-left overlay, white text, transparent BG.  
+3. **Calendar** – Google Calendar month grid, top-right overlay, white box @ 70 % opacity.  
+4. **SL Departures** – Stockholm public transport (bus, boat, metro) bottom panel (30 % height).
+
+All configuration is done through a password-protected web admin panel.  
+Architecture: **cloud backend + Raspberry Pi/PC as display client** (loads the hosted site in full-screen).
+
+---
+
+## 2. Functional Requirements
+
+### 2.1 Moodboard
+- Source: images in a **shared Google Drive folder**.
+- One image displayed at a time, **fade** transition (default; admin can pick fade/slide/none etc.).
+- **Display time:** 40 s per image.
+- Admin can set a **max display frequency** per image via dropdown: Unlimited (default) / 1, 3, 5 × per day / 1 × per week / 1 × per month / 1 × per year.
+- Rotation algorithm:
+  1. Exclude images that hit their limit for the current period.
+  2. Randomly pick among the rest.
+  3. If all are excluded, reset counters.
+
+### 2.2 SL Departures
+- Data source: **SL RealTime 4 API** (Trafiklab).  
+- Configurable stops (admin): start with  
+  - *Nacka Strand* (boat)  
+  - *Jarlaberg* (bus).
+- Supported modes: bus, boat, metro (tunnelbana).
+- Show **next 2 departures** per stop, HH:MM format, color-match line color.
+- Refresh backend cache every **120 s**.
+
+### 2.3 Calendar
+- Connect via Google OAuth; read-only.
+- Month view grid; each day shows event **title + start time**.
+- Multiple calendars supported, **color-coded** per calendar.
+- Refresh events every **20 min**.
+
+### 2.4 Clock
+- 24 h HH:MM, no seconds (toggle optional).
+- White font, transparent background (match 70 % opacity).
+
+---
+
+## 3. Layout & Style
+- Target resolution 2560 × 1440, landscape; responsive.
+- Flex layout:

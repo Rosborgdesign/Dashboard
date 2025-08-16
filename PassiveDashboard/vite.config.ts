@@ -25,14 +25,14 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname, "client"),
   // Set the base URL to the repository name when deploying to GitHub Pages.
-  // This ensures that built asset paths include `/Dashboard` instead of assuming root.
+  // This ensures that built asset paths include `/Dashboard/` instead of assuming root.
   base: "/Dashboard/",
   build: {
-    // Output the built static site directly to the top-level `dist` folder. This
-    // makes it easier to deploy to GitHub Pages without needing to move files
-    // around, and ensures that `index.html` is located at the root of the
-    // build output.
-    outDir: path.resolve(import.meta.dirname, "dist"),
+    // Output the built static site into `dist/public` so that the client files
+    // are separated from the server output and can be copied to the public-dist
+    // directory for GitHub Pages. The server build (esbuild) will also output
+    // to `dist`, so keeping client output under `dist/public` avoids conflicts.
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
   server: {
